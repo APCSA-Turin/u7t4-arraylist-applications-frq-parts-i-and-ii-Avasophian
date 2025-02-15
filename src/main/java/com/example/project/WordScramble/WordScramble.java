@@ -1,5 +1,9 @@
 package com.example.project.WordScramble;
+
+
 import java.util.ArrayList;
+import java.util.Arrays;
+
 public class WordScramble {
   /** Scrambles a given word.
    *
@@ -12,11 +16,46 @@ public class WordScramble {
    *  - two consecutive letters consisting of "A" followed by a letter that was not "A" were swapped
    *  - letters were swapped at most once
    */
-  public static String scrambleWord(String word) {
-      /* to be implemented in part (a) */
-      return "";
+  public static String scrambleWord(String word) 
+  {
+      String newString = "";
+      if (word.length() == 1)
+      {
+        return word;
+      }
+      for (int i = 0; i < word.length() - 1; i++)
+      {
+          String w = word.substring(i, i+1);
+          String wAhead =  word.substring(i+1, i+2);
+          if (w.equals("A") && !(wAhead.equals("A")))
+          {
+             newString += wAhead;
+             newString += w;
+             i += 1;
+             if (i == word.length() - 2)
+             {
+               newString += word.substring(i+1, i+2);
+             }
+          }
+          else
+          {
+            newString += w;
+            if (i == word.length() - 2)
+            {
+              newString += wAhead;
+            }
+          }
+         
+      }
+      return newString;
   }
-
+   public static void main(String[] args) 
+    {
+        ArrayList<String> testWordList = new ArrayList<String>(Arrays.asList("TAN", "ABRACADABRA", "WHOA", "APPLE", "EGGS"));
+        testWordList = WordScramble.scrambleOrRemove(testWordList);
+        ArrayList<String> expectedAfterScrambleRemove = new ArrayList<String>(Arrays.asList("TNA", "BARCADABARA", "PAPLE"));
+        System.out.println(testWordList);
+     }
   /** Modifies wordList by replacing each word with its scrambled
    *  version, removing any words that are unchanged as a result of scrambling.
    *
@@ -30,7 +69,23 @@ public class WordScramble {
    *    before the method was called
    */
   public static ArrayList<String> scrambleOrRemove(ArrayList<String> wordList) {
-      /* to be implemented in part (b) */
-      return new ArrayList<String>();
+     ArrayList<String> newList = new ArrayList<String>();
+      for (String word : wordList)
+      {
+        newList.add(scrambleWord(word));
+      }
+
+      
+      for (int i = 0; i < newList.size(); i++)
+      {
+        if (newList.get(i).equals(wordList.get(i)))
+        {
+            newList.remove(i);
+            wordList.remove(i);
+            i --;
+        }
+      }
+      wordList = newList;
+      return wordList;
   }
 }
